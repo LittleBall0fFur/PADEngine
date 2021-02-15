@@ -30,6 +30,7 @@ public:
 	/// @brief The constructor for the TextureBuffer class.
 	/// @param _path Path to texture file.
 	TextureBuffer(const char* _path);
+	TextureBuffer(const void* _pixels, int _width, int _height);
 	/// @brief The deconstructor for the TextureBuffer class.
 	~TextureBuffer();
 
@@ -62,7 +63,7 @@ private:
 
 	/// @brief Create a texture image.
 	/// @param _path Path to texture file.
-	void createTextureImage(const char* _path);
+	void createTextureImage(const void* _pixels, int _width, int _height);
 
 	/// @brief Create a texture image view.
 	void createTextureImageView();

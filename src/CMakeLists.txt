@@ -44,8 +44,12 @@ add_library(PADEngine STATIC
   framebuffers.h
   meshbuffer.cpp
   meshbuffer.h
+  fontbuffer.cpp
+  fontbuffer.h
   modelloader.cpp
   modelloader.h
+  fontloader.cpp
+  fontloader.h
   vertex.h
 
   # PADEngine shader files
@@ -92,6 +96,8 @@ add_library(PADEngine STATIC
   time.cpp
   camera.h
   camera.cpp
+  text.h
+  text.cpp
   logger.h
 )
 

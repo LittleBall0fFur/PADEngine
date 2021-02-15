@@ -3,9 +3,12 @@
 static ResourceManager* _instance;
 
 ResourceManager::ResourceManager() {
+	FontLoader::init();
+
 	_textures = std::map<std::string, TextureBuffer*>();
 	_meshes = std::map<MeshType, MeshBuffer*>();
 	_objectMeshes = std::map<std::string, MeshBuffer*>();
+	_fonts = std::map<std::string, FontBuffer*>();
 }
 
 ResourceManager* ResourceManager::getInstance() {
@@ -50,6 +53,17 @@ MeshBuffer* ResourceManager::getObjectMeshBuffer(const char* _path) {
 	return _objectMeshes[_path];
 }
 
+FontBuffer* ResourceManager::getFont(const char* _path) {
+	if (_fonts[_path] != NULL) {
+		return _fonts[_path];
+	}
+
+	FontBuffer* f = new FontBuffer(_path);
+	_fonts[_path] = f;
+
+	return _fonts[_path];
+}
+
 void ResourceManager::deleteInstance() {
 	delete _instance;
 	_instance = nullptr;
@@ -82,5 +96,14 @@ ResourceManager::~ResourceManager() {
 		}
 	}
 	_objectMeshes.clear();
+
+	// delete loaded fonts
+	std::map<std::string, FontBuffer*>::iterator font_it;
+	for (font_it = _fonts.begin(); font_it != _fonts.end(); ++font_it) {
+		if (font_it->second != NULL) {
+			delete font_it->second;
+		}
+	}
+	_fonts.clear();
 }
 

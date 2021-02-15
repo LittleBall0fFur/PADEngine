@@ -36,6 +36,7 @@
 enum class EntityType {
     ENTITY,
     LIGHT,
+    TEXT,
     CUSTOM
 };
 

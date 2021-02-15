@@ -169,6 +169,24 @@ VkCommandBuffer Renderer::updateCommandBuffers(Scene* _scene, int _index) {
         vkCmdEndRenderPass(this->_commandBuffers[_index]);
     }
 
+    std::vector<Text*> texts = RenderFactory::sortEntitiesByText(_scene->getChildren());
+    for (Text* text : texts) {
+        for(VertexBuffer* vertexBuffer : text->getBuffers()){
+            // set vertex and index buffer
+            VkBuffer vertexBuffers[] = { vertexBuffer->getBuffer() };
+            VkDeviceSize offsets[] = { 0 };
+            vkCmdBindVertexBuffers(this->_commandBuffers[_index], 0, 1, vertexBuffers, offsets);
+
+            // update descriptors
+            text->updateDescriptors(_index);
+
+            // set descriptors
+            vkCmdBindDescriptorSets(_commandBuffers[_index], VK_PIPELINE_BIND_POINT_GRAPHICS, text->getMaterial()->getMaterialBuffer()->getShaderPass()->getPipelineLayout(), 0, 1, &text->getDescriptorSet(_index), 0, nullptr);
+            // draw mesh
+            vkCmdDrawIndexed(_commandBuffers[_index], static_cast<uint32_t>(text->getMesh()->getBuffer()->index()->getBufferSize()), 1, 0, 0, 0);
+        }
+    }
+
     // end command buffer
     endCommandBuffer(_index);
 

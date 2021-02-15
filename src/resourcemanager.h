@@ -12,6 +12,7 @@
 #include <iostream>
 #include <map>
 
+#include "fontbuffer.h"
 #include "descriptor.h"
 #include "texturebuffer.h"
 #include "meshbuffer.h"
@@ -41,13 +42,20 @@ class ResourceManager {
 		/// @return Pointer to MeshBuffer.
 		MeshBuffer* getMeshBuffer(MeshType _type);
 
-		/// @brief Get MeshBuffer by object by path.
+		/// @brief Get MeshBuffer object by path.
 		/// @param _path Path to object file.
 		/// @return Pointer to MeshBuffer.
 		MeshBuffer* getObjectMeshBuffer(const char* _path);
+
+		/// @brief Get FontBuffer by font path.
+		/// @param _path Path to font file.
+		/// @return Pointer to FontBuffer.
+		FontBuffer* getFont(const char* _path);
+
 	private:
 		std::map<std::string, TextureBuffer*> _textures; ///< @brief A std::map containing TextureBuffer pointers arranged by path
 		std::map<MeshType, MeshBuffer*> _meshes; ///< @brief A std::map containing MeshBuffer pointers arranged by MeshType
 		std::map<std::string, MeshBuffer*> _objectMeshes; ///< @brief A std::map containing MeshBuffer pointers arranged by path
+		std::map<std::string, FontBuffer*> _fonts; ///< @brief A std::map containing FontBuffer pointers arranged by path
 };
 #endif

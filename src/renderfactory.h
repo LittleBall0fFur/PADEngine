@@ -9,6 +9,7 @@
 
 #include "scene.h"
 #include "hierarchy.h"
+#include "text.h"
 
 /// @brief Class describing a RenderFactory, which contains static function used by the Renderer.
 class RenderFactory {
@@ -34,12 +35,29 @@ class RenderFactory {
 			std::map<std::string, std::map<MeshType, std::vector<Entity*>>> entities = std::map<std::string, std::map<MeshType, std::vector<Entity*>>>();
 			for (Hierarchy* hierarchy : _entities) {
 				Entity* entity = (Entity*)hierarchy;
+				if (entity->getType() == EntityType::TEXT)
+					continue;
+
 				std::string name = entity->getMaterial()->getMaterialBuffer()->getName();
 				MeshType type = entity->getMesh()->getType();
 				entities[name][type].push_back(entity);
 			}
 
 			return entities;
+		}
+
+		static std::vector<Text*> sortEntitiesByText(std::vector<Hierarchy*> _entities) {
+			std::vector<Text*> texts = std::vector<Text*>();
+			for (Hierarchy* hierarchy : _entities) {
+				Entity* entity = (Entity*)hierarchy;
+				if (entity->getType() != EntityType::TEXT)
+					continue;
+
+				Text* text = (Text*)entity;
+				texts.push_back(text);
+			}
+
+			return texts;
 		}
 };
 #endif
